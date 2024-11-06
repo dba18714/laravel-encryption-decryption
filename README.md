@@ -1,66 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel 加密解密工具
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+一个基于 Laravel 的命令行加密解密工具，支持使用自定义16进制密钥进行加密和解密操作。
 
-## About Laravel
+## 功能特点
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 支持使用自定义16进制密钥进行加密/解密
+- 支持多行文本加密
+- 支持从文件读取密文进行解密
+- 使用 Laravel 的加密机制，确保数据安全性
+- 使用 AES-256-CBC 加密算法
+- 支持生成随机密钥
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 系统要求
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.1
+- Laravel >= 10.x
+- OpenSSL PHP 扩展
 
-## Learning Laravel
+## 安装
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. 克隆项目到本地：
+```bash
+git clone https://github.com/dba18714/laravel-encryption-decryption.git
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. 安装依赖：
+```bash
+composer install
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 使用方法
 
-## Laravel Sponsors
+### 加密命令
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+php artisan app:encrypt
+```
 
-### Premium Partners
+加密命令支持：
+- 输入自定义的64位16进制密钥
+- 自动生成随机密钥
+- 支持多行文本输入
+- 使用自定义结束标记
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 解密命令
 
-## Contributing
+```bash
+php artisan app:decrypt
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+解密命令支持：
+- 直接输入密文解密
+- 从文件读取密文：
+```bash
+php artisan app:decrypt --file=path/to/your/encrypted.txt
+```
 
-## Code of Conduct
+## 注意事项
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. 密钥要求：
+   - 必须是64个16进制字符（32字节）
+   - 请安全保存您的密钥，密文解密时需要使用相同的密钥
 
-## Security Vulnerabilities
+2. 密文格式：
+   - 加密后的密文为 base64 编码格式
+   - 解密时请确保密文的完整性
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3. 文件路径：
+   - 支持绝对路径和相对路径
+   - 相对路径基于项目根目录
 
-## License
+## 示例
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 加密示例：
+```bash
+php artisan app:encrypt
+# 选择输入自定义密钥或生成随机密钥
+# 输入要加密的文本
+# 使用 EOF 或自定义标记结束输入
+```
+
+### 解密示例：
+```bash
+# 直接输入密文解密
+php artisan app:decrypt
+
+# 从文件读取密文解密
+php artisan app:decrypt --file=./encrypted.txt
+```
+
+## 安全建议
+
+1. 请妥善保管加密密钥
+2. 建议使用安全的方式传输密文和密钥
+3. 在生产环境中请使用 HTTPS 传输加密数据
+
+## 许可证
+
+本项目基于 [MIT license](https://opensource.org/licenses/MIT) 开源。
